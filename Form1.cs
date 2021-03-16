@@ -14,8 +14,7 @@ namespace MiniProjeto
 {    
     public partial class Form1 : Form
     {
-        string loadPath;
-        //string savePath;
+        string path;        
         List<Hero> heroCollection;
 
         public Form1()
@@ -30,7 +29,7 @@ namespace MiniProjeto
 
         private void Btn_savefile_Click(object sender, EventArgs e)
         {
-            saveFileDialog1.ShowDialog();
+            
         }
 
         private void SaveOk(object sender, CancelEventArgs e)
@@ -45,10 +44,10 @@ namespace MiniProjeto
 
         private void LoadOk(object sender, CancelEventArgs e)
         {                      
-            this.loadPath = openFileDialog1.FileName;
+            this.path = openFileDialog1.FileName;
 
             string jsonHeroes;
-            using (StreamReader reader = new StreamReader(loadPath))
+            using (StreamReader reader = new StreamReader(path))
             {
                 jsonHeroes = reader.ReadToEnd();
             }
@@ -66,13 +65,7 @@ namespace MiniProjeto
             }
             
             UpdateCollection();           
-        }
-
-        public void UpdateCollection()
-        {
-            lb_heroes.DataSource = null;
-            lb_heroes.DataSource = this.heroCollection; 
-        }
+        }        
 
         private void Btn_additem_Click(object sender, EventArgs e)
         {
@@ -81,20 +74,17 @@ namespace MiniProjeto
         }
 
         private void Btn_edititem_Click(object sender, EventArgs e)
-        {
-            if (lb_heroes.SelectedIndex != -1)
-            {
-                Hero hero = heroCollection[lb_heroes.SelectedIndex];
-                heroCollection.RemoveAt(lb_heroes.SelectedIndex);
-                Form2 frm = new Form2(this, heroCollection, hero);
+        {                           
+            Form2 frm = new Form2(this, heroCollection, lb_heroes.SelectedIndex);
 
-                frm.Show();
-            }
-            else
-            {
-                UpdateCollection();
-            }
-            
+            frm.Show();               
+        }
+
+        //Custom methods
+        public void UpdateCollection()
+        {
+            lb_heroes.DataSource = null;
+            lb_heroes.DataSource = this.heroCollection;
         }
     }     
 }
