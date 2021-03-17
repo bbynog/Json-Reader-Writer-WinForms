@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -50,10 +51,11 @@ namespace MiniProjeto
             if (heroIndex != -1)
             {
                 int hIndex = heroIndex ?? default;
-                heroCollection[hIndex].Name = tb_name.Text;
-                heroCollection[hIndex].Age = Int32.Parse(tb_age.Text);
-                heroCollection[hIndex].SecretId = mainForm.Encrypt(tb_secretID.Text);
-                heroCollection[hIndex].Powers = lb_powerlist.Items.Cast<string>().ToList();
+                Hero hero = heroCollection[hIndex];
+                hero.Name = tb_name.Text;
+                hero.Age = Int32.Parse(tb_age.Text);
+                hero.SecretId = mainForm.Encrypt(tb_secretID.Text);
+                hero.Powers = lb_powerlist.Items.Cast<string>().ToList();             
             }
             else
             {
@@ -64,10 +66,9 @@ namespace MiniProjeto
                     SecretId = mainForm.Encrypt(tb_secretID.Text),
                     Powers = lb_powerlist.Items.Cast<string>().ToList()
                 };
-
-                heroCollection.Add(newHero);                
+                
+                heroCollection.Add(newHero);                                          
             }
-
             mainForm.UpdateCollection();
             this.Close();
         }
@@ -81,9 +82,9 @@ namespace MiniProjeto
         }
 
         private void Btn_deleteSP_Click(object sender, EventArgs e)
-        {
-            lb_powerlist.SetSelected(0, true);
+        {            
             powers.RemoveAt(lb_powerlist.SelectedIndex);
+            lb_powerlist.SetSelected(0, true);
             UpdatePowersList();
             tb_newpower.Clear();
         }        

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
+using System.ComponentModel.DataAnnotations;
 
 namespace MiniProjeto
 {    
@@ -30,12 +31,19 @@ namespace MiniProjeto
 
         private void Btn_savefile_Click(object sender, EventArgs e)
         {
-            
+            saveFileDialog1.ShowDialog();
         }
 
         private void SaveOk(object sender, CancelEventArgs e)
         {
-            //this.savePath = saveFileDialog1.FileName;
+            string savePath = saveFileDialog1.FileName;
+
+            var jsonToWrite = JsonConvert.SerializeObject(heroCollection, Formatting.Indented);
+
+            using (var writer = new StreamWriter(savePath))
+            {
+                writer.Write(jsonToWrite);
+            }
         }
 
         private void Btn_loadfile_Click(object sender, EventArgs e)
@@ -134,5 +142,23 @@ namespace MiniProjeto
             }
             return ToReturn;      
         }
+
+        public bool ValidateHero(Hero hero)
+        {
+            ValidationContext context = new ValidationContext(hero, null, null);
+            IList<ValidationResult> errors = new List<ValidationResult>();
+
+            if (!Validator.TryValidateObject(hero, context, errors, true))
+            {
+                foreach (ValidationResult result in errors)
+                    MessageBox.Show(result.ErrorMessage);
+                return false;
+            }
+            else
+            { 
+                MessageBox.Show("Validated");
+                return true;
+            }
+        }    
     }     
 }
