@@ -38,7 +38,7 @@ namespace MiniProjeto
                 int hIndex = heroIndex ?? default;
                 tb_name.Text = heroCollection[hIndex].Name;
                 tb_age.Text = Convert.ToString(heroCollection[hIndex].Age);
-                tb_secretID.Text = heroCollection[hIndex].SecretId;                
+                tb_secretID.Text = mainForm.Decrypt(heroCollection[hIndex].SecretId);                
                 lb_powerlist.DataSource = heroCollection[hIndex].Powers;
                 powers = heroCollection[hIndex].Powers;
                 tb_newpower.Text = lb_powerlist.SelectedItem.ToString();
@@ -52,7 +52,7 @@ namespace MiniProjeto
                 int hIndex = heroIndex ?? default;
                 heroCollection[hIndex].Name = tb_name.Text;
                 heroCollection[hIndex].Age = Int32.Parse(tb_age.Text);
-                heroCollection[hIndex].SecretId = tb_secretID.Text;
+                heroCollection[hIndex].SecretId = mainForm.Encrypt(tb_secretID.Text);
                 heroCollection[hIndex].Powers = lb_powerlist.Items.Cast<string>().ToList();
             }
             else
@@ -61,7 +61,7 @@ namespace MiniProjeto
                 {
                     Name = tb_name.Text,
                     Age = Int32.Parse(tb_age.Text),
-                    SecretId = tb_secretID.Text,
+                    SecretId = mainForm.Encrypt(tb_secretID.Text),
                     Powers = lb_powerlist.Items.Cast<string>().ToList()
                 };
 
